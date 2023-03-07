@@ -40,7 +40,7 @@ jobs:
       - name: Deploy resources
         uses: Azure/data-factory-deploy-action@v1.2.0
         with:
-         resourceGroupName: tk10sb20
+         resourceGroupName: RG-2023-Test
          dataFactoryName: adf-tk10sb20
          armTemplateFile: adf/ARMTemplateForFactory.json
          armTemplateParametersFile: adf/ARMTemplateParametersForFactory.json
