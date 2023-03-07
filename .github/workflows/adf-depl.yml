@@ -44,3 +44,4 @@ jobs:
          dataFactoryName: AdfLearn-91-Test
          armTemplateFile: adf/ARMTemplateForFactory.json
          armTemplateParametersFile: adf/ARMTemplateParametersForFactory.json
+         additionalParameters: 'LS_Covid_properties_typeProperties_url=https://xxxxxxxxxxxxxxxx.dfs.core.windows.net/ LS_addeco_properties_typeProperties_url=https://yyyyyyyyyyyyy.dfs.core.windows.net/ '
