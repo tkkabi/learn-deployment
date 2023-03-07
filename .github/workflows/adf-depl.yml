@@ -41,6 +41,6 @@ jobs:
         uses: Azure/data-factory-deploy-action@v1.2.0
         with:
          resourceGroupName: RG-2023-Test
-         dataFactoryName: adf-tk10sb20
+         dataFactoryName: AdfLearn-91-Test
          armTemplateFile: adf/ARMTemplateForFactory.json
          armTemplateParametersFile: adf/ARMTemplateParametersForFactory.json
