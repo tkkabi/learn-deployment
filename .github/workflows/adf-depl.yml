@@ -23,12 +23,14 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout the repo
         uses: actions/checkout@v3
+      - name: install az cli
+        run: |          
+          pip install az.cli
 
       - name: adf
         run: |
           echo $GITHUB_WORKSPACE
-          ls -ltr adf
-          pip install az.cli
+          ls -ltr adf          
           
       - name: Login via Az module
         uses: azure/login@v1
