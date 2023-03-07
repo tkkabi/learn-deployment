@@ -5,15 +5,19 @@
         "factoryName": {
             "type": "string",
             "metadata": "Data Factory name",
-            "defaultValue": "AdfLearn-91"
+            "defaultValue": "tk-sb-adf-dev"
         },
-        "LS_Covid_properties_typeProperties_url": {
+        "MPE_Dev_SqlDB_properties_privateLinkResourceId": {
             "type": "string",
-            "defaultValue": "https://tapascovidreportingsa.dfs.core.windows.net/"
+            "defaultValue": "/subscriptions/0817546b-75ca-4d4f-8319-505d8a966431/resourceGroups/RG_Learn_Depl_Dev/providers/Microsoft.Sql/servers/mssql-srv-dev"
         },
-        "LS_addeco_properties_typeProperties_url": {
+        "MPE_Dev_SqlDB_properties_groupId": {
             "type": "string",
-            "defaultValue": "https://addecointerview26.dfs.core.windows.net/"
+            "defaultValue": "sqlServer"
+        },
+        "LS_KV_properties_typeProperties_baseUrl": {
+            "type": "string",
+            "defaultValue": "https://tk-sb-kv-dev.vault.azure.net/"
         }
     },
     "variables": {
@@ -21,204 +25,18 @@
     },
     "resources": [
         {
-            "name": "[concat(parameters('factoryName'), '/P_addeco_covid')]",
-            "type": "Microsoft.DataFactory/factories/pipelines",
-            "apiVersion": "2018-06-01",
-            "properties": {
-                "activities": [
-                    {
-                        "name": "Copy data1",
-                        "type": "Copy",
-                        "dependsOn": [],
-                        "policy": {
-                            "timeout": "0.12:00:00",
-                            "retry": 0,
-                            "retryIntervalInSeconds": 30,
-                            "secureOutput": false,
-                            "secureInput": false
-                        },
-                        "userProperties": [],
-                        "typeProperties": {
-                            "source": {
-                                "type": "DelimitedTextSource",
-                                "storeSettings": {
-                                    "type": "AzureBlobFSReadSettings",
-                                    "recursive": true,
-                                    "enablePartitionDiscovery": false
-                                },
-                                "formatSettings": {
-                                    "type": "DelimitedTextReadSettings"
-                                }
-                            },
-                            "sink": {
-                                "type": "DelimitedTextSink",
-                                "storeSettings": {
-                                    "type": "AzureBlobFSWriteSettings"
-                                },
-                                "formatSettings": {
-                                    "type": "DelimitedTextWriteSettings",
-                                    "quoteAllText": true,
-                                    "fileExtension": ".txt"
-                                }
-                            },
-                            "enableStaging": false,
-                            "translator": {
-                                "type": "TabularTranslator",
-                                "typeConversion": true,
-                                "typeConversionSettings": {
-                                    "allowDataTruncation": true,
-                                    "treatBooleanAsNumber": false
-                                }
-                            }
-                        },
-                        "inputs": [
-                            {
-                                "referenceName": "DS_Addeco",
-                                "type": "DatasetReference",
-                                "parameters": {}
-                            }
-                        ],
-                        "outputs": [
-                            {
-                                "referenceName": "DS_Covid",
-                                "type": "DatasetReference",
-                                "parameters": {}
-                            }
-                        ]
-                    }
-                ],
-                "policy": {
-                    "elapsedTimeMetric": {},
-                    "cancelAfter": {}
-                },
-                "annotations": [],
-                "lastPublishTime": "2023-01-29T16:31:31Z"
-            },
-            "dependsOn": [
-                "[concat(variables('factoryId'), '/datasets/DS_Addeco')]",
-                "[concat(variables('factoryId'), '/datasets/DS_Covid')]"
-            ]
-        },
-        {
-            "name": "[concat(parameters('factoryName'), '/DS_Addeco')]",
-            "type": "Microsoft.DataFactory/factories/datasets",
-            "apiVersion": "2018-06-01",
-            "properties": {
-                "linkedServiceName": {
-                    "referenceName": "LS_addeco",
-                    "type": "LinkedServiceReference"
-                },
-                "annotations": [],
-                "type": "DelimitedText",
-                "typeProperties": {
-                    "location": {
-                        "type": "AzureBlobFSLocation",
-                        "fileName": "GB_Arch_1.csv",
-                        "folderPath": "tapas",
-                        "fileSystem": "raw"
-                    },
-                    "columnDelimiter": ",",
-                    "escapeChar": "\\",
-                    "quoteChar": "\""
-                },
-                "schema": [
-                    {
-                        "type": "String"
-                    },
-                    {
-                        "type": "String"
-                    },
-                    {
-                        "type": "String"
-                    },
-                    {
-                        "type": "String"
-                    },
-                    {
-                        "type": "String"
-                    }
-                ]
-            },
-            "dependsOn": [
-                "[concat(variables('factoryId'), '/linkedServices/LS_addeco')]"
-            ]
-        },
-        {
-            "name": "[concat(parameters('factoryName'), '/DS_Covid')]",
-            "type": "Microsoft.DataFactory/factories/datasets",
-            "apiVersion": "2018-06-01",
-            "properties": {
-                "linkedServiceName": {
-                    "referenceName": "LS_Covid",
-                    "type": "LinkedServiceReference"
-                },
-                "annotations": [],
-                "type": "DelimitedText",
-                "typeProperties": {
-                    "location": {
-                        "type": "AzureBlobFSLocation",
-                        "fileSystem": "raw"
-                    },
-                    "columnDelimiter": ",",
-                    "escapeChar": "\\",
-                    "quoteChar": "\""
-                },
-                "schema": []
-            },
-            "dependsOn": [
-                "[concat(variables('factoryId'), '/linkedServices/LS_Covid')]"
-            ]
-        },
-        {
-            "name": "[concat(parameters('factoryName'), '/LS_Covid')]",
-            "type": "Microsoft.DataFactory/factories/linkedServices",
-            "apiVersion": "2018-06-01",
-            "properties": {
-                "annotations": [],
-                "type": "AzureBlobFS",
-                "typeProperties": {
-                    "url": "[parameters('LS_Covid_properties_typeProperties_url')]"
-                }
-            },
-            "dependsOn": []
-        },
-        {
-            "name": "[concat(parameters('factoryName'), '/LS_addeco')]",
-            "type": "Microsoft.DataFactory/factories/linkedServices",
-            "apiVersion": "2018-06-01",
-            "properties": {
-                "annotations": [],
-                "type": "AzureBlobFS",
-                "typeProperties": {
-                    "url": "[parameters('LS_addeco_properties_typeProperties_url')]"
-                }
-            },
-            "dependsOn": []
-        },
-        {
-            "name": "[concat(parameters('factoryName'), '/default')]",
-            "type": "Microsoft.DataFactory/factories/managedVirtualNetworks",
-            "apiVersion": "2018-06-01",
-            "properties": {},
-            "dependsOn": []
-        },
-        {
-            "name": "[concat(parameters('factoryName'), '/IR-VirtualNetwork')]",
+            "name": "[concat(parameters('factoryName'), '/AutoResolveIntegrationRuntime')]",
             "type": "Microsoft.DataFactory/factories/integrationRuntimes",
             "apiVersion": "2018-06-01",
             "properties": {
                 "type": "Managed",
                 "typeProperties": {
                     "computeProperties": {
-                        "location": "East US 2",
+                        "location": "AutoResolve",
                         "dataFlowProperties": {
                             "computeType": "General",
                             "coreCount": 8,
-                            "timeToLive": 10,
-                            "cleanup": false
-                        },
-                        "pipelineExternalComputeScaleProperties": {
-                            "timeToLive": 60
+                            "timeToLive": 0
                         }
                     }
                 },
@@ -230,6 +48,38 @@
             "dependsOn": [
                 "[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
             ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/default')]",
+            "type": "Microsoft.DataFactory/factories/managedVirtualNetworks",
+            "apiVersion": "2018-06-01",
+            "properties": {},
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/default/MPE_Dev_SqlDB')]",
+            "type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "privateLinkResourceId": "[parameters('MPE_Dev_SqlDB_properties_privateLinkResourceId')]",
+                "groupId": "[parameters('MPE_Dev_SqlDB_properties_groupId')]"
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/LS_KV')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "AzureKeyVault",
+                "typeProperties": {
+                    "baseUrl": "[parameters('LS_KV_properties_typeProperties_baseUrl')]"
+                }
+            },
+            "dependsOn": []
         }
     ]
 }

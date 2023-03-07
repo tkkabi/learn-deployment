@@ -40,8 +40,9 @@ jobs:
       - name: Deploy resources
         uses: Azure/data-factory-deploy-action@v1.2.0
         with:
-         resourceGroupName: RG-2023-Test
-         dataFactoryName: AdfLearn-91-Test
+         resourceGroupName: RG_Learn_Depl_Test
+         dataFactoryName: tk-sb-adf-test
          armTemplateFile: adf/ARMTemplateForFactory.json
          armTemplateParametersFile: adf/ARMTemplateParametersForFactory.json
-         additionalParameters: 'LS_Covid_properties_typeProperties_url=https://xxxxxxxxxxxxxxxx.dfs.core.windows.net/ LS_addeco_properties_typeProperties_url=https://yyyyyyyyyyyyy.dfs.core.windows.net/ '
+         additionalParameters: 'MPE_Dev_SqlDB_properties_privateLinkResourceId=/subscriptions/0817546b-75ca-4d4f-8319-505d8a966431/resourceGroups/RG_Learn_Depl_Test/providers/Microsoft.Sql/servers/mssql-srv-test
+                                LS_KV_properties_typeProperties_baseUrl=https://tk-sb-kv-test.vault.azure.net/ '

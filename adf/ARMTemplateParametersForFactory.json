@@ -3,13 +3,16 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "factoryName": {
-            "value": "AdfLearn-91"
+            "value": "tk-sb-adf-dev"
         },
-        "LS_Covid_properties_typeProperties_url": {
-            "value": "https://tapascovidreportingsa.dfs.core.windows.net/"
+        "MPE_Dev_SqlDB_properties_privateLinkResourceId": {
+            "value": "/subscriptions/0817546b-75ca-4d4f-8319-505d8a966431/resourceGroups/RG_Learn_Depl_Dev/providers/Microsoft.Sql/servers/mssql-srv-dev"
         },
-        "LS_addeco_properties_typeProperties_url": {
-            "value": "https://addecointerview26.dfs.core.windows.net/"
+        "MPE_Dev_SqlDB_properties_groupId": {
+            "value": "sqlServer"
+        },
+        "LS_KV_properties_typeProperties_baseUrl": {
+            "value": "https://tk-sb-kv-dev.vault.azure.net/"
         }
     }
 }
