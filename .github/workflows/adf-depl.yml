@@ -37,3 +37,10 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS_1 }}
           enable-AzPSSession: true 
+      - name: Deploy resources
+        uses: Azure/data-factory-deploy-action@v1.2.0
+        with:
+         resourceGroupName: tk10sb20
+         dataFactoryName: adf-tk10sb20
+         armTemplateFile: adf/ARMTemplateForFactory.json
+         armTemplateParametersFile: adf/ARMTemplateParametersForFactory.json
