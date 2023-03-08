@@ -7,6 +7,15 @@
             "metadata": "Data Factory name",
             "defaultValue": "tk-sb-adf-dev"
         },
+        "LS_SQLDB_connectionString": {
+            "type": "secureString",
+            "metadata": "Secure string for 'connectionString' of 'LS_SQLDB'",
+            "defaultValue": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=mssql-srv-dev.database.windows.net;Initial Catalog=tk-sb-dev;User ID=sqladmin"
+        },
+        "LS_KV_properties_typeProperties_baseUrl": {
+            "type": "string",
+            "defaultValue": "https://tk-sb-kv-dev.vault.azure.net/"
+        },
         "MPE_Dev_SqlDB_properties_privateLinkResourceId": {
             "type": "string",
             "defaultValue": "/subscriptions/0817546b-75ca-4d4f-8319-505d8a966431/resourceGroups/RG_Learn_Depl_Dev/providers/Microsoft.Sql/servers/mssql-srv-dev"
@@ -15,9 +24,11 @@
             "type": "string",
             "defaultValue": "sqlServer"
         },
-        "LS_KV_properties_typeProperties_baseUrl": {
-            "type": "string",
-            "defaultValue": "https://tk-sb-kv-dev.vault.azure.net/"
+        "MPE_Dev_SqlDB_properties_fqdns": {
+            "type": "array",
+            "defaultValue": [
+                "mssql-srv-dev.database.windows.net"
+            ]
         }
     },
     "variables": {
@@ -50,6 +61,19 @@
             ]
         },
         {
+            "name": "[concat(parameters('factoryName'), '/LS_KV')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "AzureKeyVault",
+                "typeProperties": {
+                    "baseUrl": "[parameters('LS_KV_properties_typeProperties_baseUrl')]"
+                }
+            },
+            "dependsOn": []
+        },
+        {
             "name": "[concat(parameters('factoryName'), '/default')]",
             "type": "Microsoft.DataFactory/factories/managedVirtualNetworks",
             "apiVersion": "2018-06-01",
@@ -62,24 +86,40 @@
             "apiVersion": "2018-06-01",
             "properties": {
                 "privateLinkResourceId": "[parameters('MPE_Dev_SqlDB_properties_privateLinkResourceId')]",
-                "groupId": "[parameters('MPE_Dev_SqlDB_properties_groupId')]"
+                "groupId": "[parameters('MPE_Dev_SqlDB_properties_groupId')]",
+                "fqdns": "[parameters('MPE_Dev_SqlDB_properties_fqdns')]"
             },
             "dependsOn": [
                 "[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
             ]
         },
         {
-            "name": "[concat(parameters('factoryName'), '/LS_KV')]",
+            "name": "[concat(parameters('factoryName'), '/LS_SQLDB')]",
             "type": "Microsoft.DataFactory/factories/linkedServices",
             "apiVersion": "2018-06-01",
             "properties": {
                 "annotations": [],
-                "type": "AzureKeyVault",
+                "type": "AzureSqlDatabase",
                 "typeProperties": {
-                    "baseUrl": "[parameters('LS_KV_properties_typeProperties_baseUrl')]"
+                    "connectionString": "[parameters('LS_SQLDB_connectionString')]",
+                    "password": {
+                        "type": "AzureKeyVaultSecret",
+                        "store": {
+                            "referenceName": "LS_KV",
+                            "type": "LinkedServiceReference"
+                        },
+                        "secretName": "sql-srv-pwd"
+                    }
+                },
+                "connectVia": {
+                    "referenceName": "AutoResolveIntegrationRuntime",
+                    "type": "IntegrationRuntimeReference"
                 }
             },
-            "dependsOn": []
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
+                "[concat(variables('factoryId'), '/linkedServices/LS_KV')]"
+            ]
         }
     ]
 }

@@ -5,14 +5,22 @@
         "factoryName": {
             "value": "tk-sb-adf-dev"
         },
+        "LS_SQLDB_connectionString": {
+            "value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=mssql-srv-dev.database.windows.net;Initial Catalog=tk-sb-dev;User ID=sqladmin"
+        },
+        "LS_KV_properties_typeProperties_baseUrl": {
+            "value": "https://tk-sb-kv-dev.vault.azure.net/"
+        },
         "MPE_Dev_SqlDB_properties_privateLinkResourceId": {
             "value": "/subscriptions/0817546b-75ca-4d4f-8319-505d8a966431/resourceGroups/RG_Learn_Depl_Dev/providers/Microsoft.Sql/servers/mssql-srv-dev"
         },
         "MPE_Dev_SqlDB_properties_groupId": {
             "value": "sqlServer"
         },
-        "LS_KV_properties_typeProperties_baseUrl": {
-            "value": "https://tk-sb-kv-dev.vault.azure.net/"
+        "MPE_Dev_SqlDB_properties_fqdns": {
+            "value": [
+                "mssql-srv-dev.database.windows.net"
+            ]
         }
     }
 }
