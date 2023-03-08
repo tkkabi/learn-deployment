@@ -48,4 +48,6 @@ jobs:
           armTemplateFile: adf/ARMTemplateForFactory.json
           armTemplateParametersFile: adf/ARMTemplateParametersForFactory.json
           additionalParameters: 'MPE_Dev_SqlDB_properties_privateLinkResourceId=/subscriptions/0817546b-75ca-4d4f-8319-505d8a966431/resourceGroups/RG_Learn_Depl_${{env.env_str_rg}}/providers/Microsoft.Sql/servers/mssql-srv-${{env.env_str}}
-                                 LS_KV_properties_typeProperties_baseUrl=https://tk-sb-kv-${{env.env_str}}.vault.azure.net/'
+                                 LS_KV_properties_typeProperties_baseUrl=https://tk-sb-kv-${{env.env_str}}.vault.azure.net/
+                                 LS_SQLDB_connectionString = Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=mssql-srv-${{env.env_str}}.database.windows.net;Initial Catalog=tk-sb-${{env.env_str}};User ID=sqladmin
+                                 MPE_Dev_SqlDB_properties_fqdns=mssql-srv-${{env.env_str}}.database.windows.net'
