@@ -13,24 +13,23 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+
 jobs:
-  # This workflow contains a single job called "build"
+  
   build:    
     runs-on: ubuntu-latest
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    env:
+      env_str: test
+      env_str_rg: Test
+    
+    steps:      
       - name: Checkout the repo
         uses: actions/checkout@v3
-      #- name: install az cli
-      #  run: |          
-      #    pip install az.cli
 
       - name: adf
         run: |
           echo $GITHUB_WORKSPACE
-          ls -ltr adf          
+          ls -ltr adf    
           
       - name: Login via Az module
         uses: azure/login@v1
@@ -40,9 +39,9 @@ jobs:
       - name: Deploy resources
         uses: Azure/data-factory-deploy-action@v1.2.0
         with:
-         resourceGroupName: RG_Learn_Depl_Test
-         dataFactoryName: tk-sb-adf-test
+         resourceGroupName: RG_Learn_Depl_$env_str_rg
+         dataFactoryName: tk-sb-adf-$env_str
          armTemplateFile: adf/ARMTemplateForFactory.json
          armTemplateParametersFile: adf/ARMTemplateParametersForFactory.json
-         additionalParameters: 'MPE_Dev_SqlDB_properties_privateLinkResourceId=/subscriptions/0817546b-75ca-4d4f-8319-505d8a966431/resourceGroups/RG_Learn_Depl_Test/providers/Microsoft.Sql/servers/mssql-srv-test
-                                LS_KV_properties_typeProperties_baseUrl=https://tk-sb-kv-test.vault.azure.net/ '
+         additionalParameters: 'MPE_Dev_SqlDB_properties_privateLinkResourceId=/subscriptions/0817546b-75ca-4d4f-8319-505d8a966431/resourceGroups/RG_Learn_Depl_$env_str_rg/providers/Microsoft.Sql/servers/mssql-srv-$env_str
+                                LS_KV_properties_typeProperties_baseUrl=https://tk-sb-kv-$env_str.vault.azure.net/ '
