@@ -40,7 +40,7 @@ jobs:
         with:
            creds: ${{ secrets.AZURE_CREDENTIALS_1 }}
            enable-AzPSSession: true 
-      - name: Deploy resources
+      - name: Deploy resources1
         uses: Azure/data-factory-deploy-action@v1.2.0
         with:
           resourceGroupName: RG_Learn_Depl_${{env.env_str_rg}}
